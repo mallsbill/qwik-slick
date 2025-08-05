@@ -10,11 +10,11 @@
   ],
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.cjs"
     },
-    "./styles": "./dist/QwikSlick.css"
+    "./styles": "./dist/index.css"
   },
   "keywords": [
     "qwik",
@@ -31,8 +31,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:lib": "tsc && vite build --mode lib",
-    "preview": "serve dist"
+    "build:lib": "vite build --mode lib && tsc --project tsconfig.lib.json",
+    "preview": "serve dist",
+    "prepublishOnly": "npm run build:lib"
   },
   "devDependencies": {
     "@types/node": "^24.2.0",
