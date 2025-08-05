@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '20'
         registry-url: 'https://registry.npmjs.org'
@@ -26,15 +26,36 @@ jobs:
     - name: Build library
       run: npm run build:lib
     
+    - name: Create archives and NPM package
+      run: |
+        # Archive du dossier dist seulement (pour dev)
+        cd dist
+        tar -czf ../qwik-slick-dist-only.tar.gz .
+        cd ..
+        zip -r qwik-slick-dist-only.zip dist/
+        # Package NPM complet (recommandé pour utilisation)
+        npm pack
+    
     - name: Create GitHub Release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        files: |
+          qwik-slick-*.tgz
+          qwik-slick-dist-only.tar.gz
+          qwik-slick-dist-only.zip
+        generate_release_notes: true
         draft: false
         prerelease: false
+        body: |
+          ## 📦 Fichiers disponibles
+          
+          - **qwik-slick-X.X.X.tgz** - Package NPM complet (recommandé)
+          - **qwik-slick-dist-only.tar.gz** - Dossier dist seulement 
+          - **qwik-slick-dist-only.zip** - Dossier dist seulement (Windows friendly)
+          
+          Pour installer : `npm install qwik-slick-X.X.X.tgz`
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
     # - name: Publish to NPM
     #   run: npm publish
