@@ -1,0 +1,49 @@
+{
+  "name": "qwik-slick",
+  "version": "1.0.0",
+  "description": "Un composant slider moderne pour Qwik, inspiré de React Slick avec toutes les fonctionnalités essentielles",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./styles": "./dist/QwikSlick.css"
+  },
+  "keywords": [
+    "qwik",
+    "slider",
+    "carousel",
+    "component",
+    "typescript",
+    "responsive"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "private": false,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:lib": "tsc && vite build --mode lib",
+    "preview": "serve dist"
+  },
+  "devDependencies": {
+    "@types/node": "^24.2.0",
+    "serve": "^14.2.4",
+    "typescript": "^5.9.2",
+    "vite": "^7.0.4"
+  },
+  "dependencies": {
+    "@builder.io/qwik": "^1.14.1"
+  },
+  "peerDependencies": {
+    "@builder.io/qwik": "^1.0.0"
+  }
+}
