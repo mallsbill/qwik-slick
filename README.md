@@ -32,14 +32,21 @@ const sliderItems = [
 <QwikSlick 
   items={sliderItems}
   slidesToShow={3}
+  slidesToScroll={1}
+  infinite={true}
+  speed={800}
+  cssEase="ease-in-out"
   autoplay={true}
   autoplaySpeed={2000}
+  pauseOnHover={true}
   dots={true}
   arrows={true}
   responsive={[
-    {breakpoint: 768, slidesToShow: 2},
-    {breakpoint: 480, slidesToShow: 1}
+    {breakpoint: 768, settings: {slidesToShow: 2, slidesToScroll: 1}},
+    {breakpoint: 480, settings: {slidesToShow: 1, slidesToScroll: 1}}
   ]}
+  beforeChange={(current, next) => console.log(`Slide ${current} -> ${next}`)}
+  afterChange={(current) => console.log(`Now on slide ${current}`)}
 />
 ```
 
@@ -49,12 +56,24 @@ const sliderItems = [
 |------|------|---------|-------------|
 | `items` | `any[]` | - | **Obligatoire** - Liste des éléments à afficher |
 | `slidesToShow` | `number` | `1` | Nombre de slides visibles |
+| `slidesToScroll` | `number` | `1` | Nombre de slides à faire défiler |
+| `infinite` | `boolean` | `false` | Défilement infini |
+| `speed` | `number` | `500` | Vitesse de transition (ms) |
+| `cssEase` | `string` | `'ease'` | Fonction d'easing CSS |
 | `autoplay` | `boolean` | `false` | Active la lecture automatique |
 | `autoplaySpeed` | `number` | `3000` | Vitesse de l'autoplay (ms) |
+| `pauseOnHover` | `boolean` | `false` | Pause l'autoplay au survol |
 | `dots` | `boolean` | `false` | Affiche les points de pagination |
 | `arrows` | `boolean` | `true` | Affiche les flèches de navigation |
+| `fade` | `boolean` | `false` | Effet de fondu entre slides |
+| `vertical` | `boolean` | `false` | Orientation verticale |
+| `centerMode` | `boolean` | `false` | Mode centré |
+| `variableWidth` | `boolean` | `false` | Largeur variable des slides |
+| `adaptiveHeight` | `boolean` | `false` | Hauteur adaptative |
 | `responsive` | `Array` | `[]` | Configuration responsive |
 | `class` | `string` | - | Classe CSS personnalisée |
+| `beforeChange` | `function` | - | Callback avant changement |
+| `afterChange` | `function` | - | Callback après changement |
 
 ## Scripts disponibles
 
