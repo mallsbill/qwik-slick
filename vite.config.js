@@ -9,7 +9,10 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       qwikVite({
+        // Mode CSR seulement pour éviter les problèmes SSR
         csr: true,
+        // Désactiver complètement l'optimiseur pour le build de lib
+        ...(isLib && { client: { devInput: false } })
       }),
     ],
     ...(isLib && {
@@ -27,7 +30,10 @@ export default defineConfig(({ mode }) => {
               '@builder.io/qwik': 'Qwik'
             }
           }
-        }
+        },
+        // Éviter la génération de chunks de preloader
+        modulePreload: false,
+        manifest: false
       }
     })
   }

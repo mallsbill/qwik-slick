@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("@builder.io/qwik"),t=e.componentQrl(e.qrl(()=>Promise.resolve().then(()=>require("./QwikSlick.tsx_QwikSlick_component_div_button_onClick_1_sQqmFl4CEwY-CrCzIgNz.cjs")).then(i=>i.QwikSlick_tsx_QwikSlick_component_0h21Yne079U),"s_0h21Yne079U"));exports.QwikSlick=t;
