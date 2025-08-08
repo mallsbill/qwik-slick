@@ -2,7 +2,8 @@
  * QwikSlick - Composant Qwik inspiré de React Slick
  * Fonctionnalités : slider horizontal, navigation, dots, autoplay, responsive, touch, accessibilité
  */
-import { component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import { component$, useSignal, useVisibleTask$, $ } from "@builder.io/qwik";
+import { isBrowser } from "@builder.io/qwik/build";
 import './QwikSlick.css';
 
 interface QwikSlickProps {
@@ -43,6 +44,8 @@ export const QwikSlick = component$((props: QwikSlickProps) => {
 
   // Responsive logic
   useVisibleTask$(() => {
+    if (!isBrowser) return; // Skip SSR
+    
     const handleResize = () => {
       if (props.responsive) {
         for (const r of props.responsive) {
@@ -63,10 +66,35 @@ export const QwikSlick = component$((props: QwikSlickProps) => {
 
   // Autoplay
   useVisibleTask$(() => {
+    if (!isBrowser) return; // Skip SSR
+    
     if (props.autoplay) {
       const startAutoplay = () => {
         intervalRef.value = setInterval(() => {
-          goToNext();
+          // Inline next logic to avoid serialization issues
+          const nextIndex = current.value + slidesToScroll.value;
+          if (isTransitioning.value) return;
+          
+          let newIndex = nextIndex;
+          
+          if (props.infinite) {
+            const totalSlides = props.infinite ? props.items.length : Math.max(0, props.items.length - slidesToShow.value);
+            if (newIndex < 0) {
+              newIndex = totalSlides;
+            } else if (newIndex > totalSlides) {
+              newIndex = 0;
+            }
+          } else {
+            const totalSlides = Math.max(0, props.items.length - slidesToShow.value);
+            newIndex = Math.max(0, Math.min(nextIndex, totalSlides));
+          }
+          
+          isTransitioning.value = true;
+          current.value = newIndex;
+          
+          setTimeout(() => {
+            isTransitioning.value = false;
+          }, speed.value);
         }, props.autoplaySpeed ?? 3000);
       };
 
@@ -105,7 +133,7 @@ export const QwikSlick = component$((props: QwikSlickProps) => {
     return props.infinite ? props.items.length : Math.max(0, props.items.length - slidesToShow.value);
   };
 
-  const goTo = (idx: number) => {
+  const goTo = $((idx: number) => {
     if (isTransitioning.value) return;
     
     props.beforeChange?.(current.value, idx);
@@ -129,28 +157,28 @@ export const QwikSlick = component$((props: QwikSlickProps) => {
       isTransitioning.value = false;
       props.afterChange?.(newIndex);
     }, speed.value);
-  };
+  });
 
-  const goToNext = () => {
+  const goToNext = $(() => {
     goTo(current.value + slidesToScroll.value);
-  };
+  });
 
-  const goToPrev = () => {
+  const goToPrev = $(() => {
     goTo(current.value - slidesToScroll.value);
-  };
+  });
 
   // Touch events
-  const onTouchStart = (e: TouchEvent) => {
+  const onTouchStart = $((e: TouchEvent) => {
     const startX = e.touches[0].clientX;
     (e.target as any).dataset.startX = startX.toString();
-  };
+  });
   
-  const onTouchEnd = (e: TouchEvent) => {
+  const onTouchEnd = $((e: TouchEvent) => {
     const startX = parseInt((e.target as any).dataset.startX || '0');
     const endX = e.changedTouches[0].clientX;
     if (startX - endX > 50) goToNext();
     if (endX - startX > 50) goToPrev();
-  };
+  });
 
   // Get visible items
   const getVisibleItems = () => {
