@@ -41,18 +41,10 @@ jobs:
       with:
         files: |
           qwik-slick-*.tgz
-          qwik-slick-dist-only.tar.gz
-          qwik-slick-dist-only.zip
         generate_release_notes: true
         draft: false
         prerelease: false
-        body: |
-          ## 📦 Fichiers disponibles
-          
-          - **qwik-slick-X.X.X.tgz** - Package NPM complet (recommandé)
-          - **qwik-slick-dist-only.tar.gz** - Dossier dist seulement 
-          - **qwik-slick-dist-only.zip** - Dossier dist seulement (Windows friendly)
-          
+        body: |          
           Pour installer : `npm install qwik-slick-X.X.X.tgz`
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
