@@ -1,6 +1,6 @@
 {
   "name": "qwik-slick",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Un composant slider moderne pour Qwik, inspiré de React Slick avec toutes les fonctionnalités essentielles",
   "main": "dist/index.js",
   "module": "dist/index.js",

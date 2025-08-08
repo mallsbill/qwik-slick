@@ -3,7 +3,7 @@
  * Fonctionnalités : slider horizontal, navigation, dots, autoplay, responsive, touch, accessibilité
  */
 import { component$, useSignal, useVisibleTask$, $ } from "@builder.io/qwik";
-import { isBrowser } from "@builder.io/qwik/build";
+import { isServer } from "@builder.io/qwik/build";
 import './QwikSlick.css';
 
 interface QwikSlickProps {
@@ -44,7 +44,7 @@ export const QwikSlick = component$((props: QwikSlickProps) => {
 
   // Responsive logic
   useVisibleTask$(() => {
-    if (!isBrowser) return; // Skip SSR
+    if (isServer) return; // Skip SSR
     
     const handleResize = () => {
       if (props.responsive) {
@@ -66,7 +66,7 @@ export const QwikSlick = component$((props: QwikSlickProps) => {
 
   // Autoplay
   useVisibleTask$(() => {
-    if (!isBrowser) return; // Skip SSR
+    if (isServer) return; // Skip SSR
     
     if (props.autoplay) {
       const startAutoplay = () => {
